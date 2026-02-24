@@ -253,18 +253,18 @@ extern "C" {
 
 /* typecast inline for different compilers */
 #ifndef CX_API_INLINE
-/* #	ifdef _MSC_VER */
-/* #		define CX_API_INLINE __forceinline */
-/* #	elif defined(__GNUC__) */
-/* #		if defined(__STRICT_ANSI__) */
-/* #			define CX_API_INLINE __inline __attribute__((always_inline)) */
-/* #		else */
-/* #			define CX_API_INLINE inline __attribute__((always_inline)) */
-/* #		endif */
-/* #	else */
-/* #		define CX_API_INLINE inline */
-/* #	endif */
-#define CX_API_INLINE inline
+#	ifdef _MSC_VER
+#		define CX_API_INLINE __forceinline
+#	elif defined(__GNUC__)
+#		if defined(__STRICT_ANSI__)
+#			define CX_API_INLINE __inline __attribute__((always_inline))
+#		else
+#			define CX_API_INLINE inline __attribute__((always_inline))
+#		endif
+#	else
+#		define CX_API_INLINE inline
+#	endif
+/* #define CX_API_INLINE inline */
 #endif
 
 /* typecast static/extern to CX_API */
@@ -723,6 +723,11 @@ CX_API CX_API_INLINE cx_mat4 cx_mat4_perspectiveRH_NO(const cx_float fov, const 
 CX_API CX_API_INLINE cx_mat4 cx_mat4_perspectiveLH_ZO(const cx_float fov, const cx_float aspect, const cx_float znear, const cx_float zfar);
 CX_API CX_API_INLINE cx_mat4 cx_mat4_perspectiveRH_ZO(const cx_float fov, const cx_float aspect, const cx_float znear, const cx_float zfar);
 CX_API CX_API_INLINE cx_mat4 cx_mat4_perspective(const cx_float fov, const cx_float aspect, const cx_float znear, const cx_float zfar);
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalLH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalRH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalLH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalRH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonal(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
 CX_API CX_API_INLINE cx_mat4 cx_mat4_lookAtLH(const cx_vec3 eye, const cx_vec3 center, const cx_vec3 up);
 CX_API CX_API_INLINE cx_mat4 cx_mat4_lookAtRH(const cx_vec3 eye, const cx_vec3 center, const cx_vec3 up);
 CX_API CX_API_INLINE cx_mat4 cx_mat4_lookAt(const cx_vec3 eye, const cx_vec3 center, const cx_vec3 up);
@@ -1822,7 +1827,82 @@ CX_API CX_API_INLINE cx_mat4 cx_mat4_perspective(const cx_float fov, const cx_fl
 	#elif  defined(CX_PERSPECTIVE_RH_ZO)
 		return cx_mat4_perspectiveRH_ZO(fov, aspect, znear, zfar);
 	#else
-		return cx_mat4_perspectiveLH_NO(fov, aspect, znear, zfar);
+		return cx_mat4_perspectiveRH_NO(fov, aspect, znear, zfar);
+	#endif
+}
+
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalLH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+{
+	const cx_float l = left;
+	const cx_float r = right;
+	const cx_float t = top;
+	const cx_float b = bottom;
+	const cx_float n = z_near;
+	const cx_float f = z_far;
+
+	return cx_mat4_set(2.0 / (r - l), 0.0,           0.0,            -(r + l) / (r - l),
+					   0.0,           2.0 / (t - b), 0.0,            -(t + b) / (t - b),
+					   0.0,           0.0,           2.0 / (f - n),  -(f + n) / (f - n),
+					   0.0,           0.0,           0.0,            1.0);
+}
+
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalRH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+{
+	const cx_float l = left;
+	const cx_float r = right;
+	const cx_float t = top;
+	const cx_float b = bottom;
+	const cx_float n = z_near;
+	const cx_float f = z_far;
+
+	return cx_mat4_set(2.0 / (r - l), 0.0,           0.0,            -(r + l) / (r - l),
+					   0.0,           2.0 / (t - b), 0.0,            -(t + b) / (t - b),
+					   0.0,           0.0,           -2.0 / (f - n), -(f + n) / (f - n),
+					   0.0,           0.0,           0.0,            1.0);
+}
+
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalLH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+{
+	const cx_float l = left;
+	const cx_float r = right;
+	const cx_float t = top;
+	const cx_float b = bottom;
+	const cx_float n = z_near;
+	const cx_float f = z_far;
+
+	return cx_mat4_set(2.0 / (r - l), 0.0,           0.0,            -(r + l) / (r - l),
+					   0.0,           2.0 / (t - b), 0.0,            -(t + b) / (t - b),
+					   0.0,           0.0,           1.0 / (f - n),  -n / (f - n),
+					   0.0,           0.0,           0.0,            1.0);
+}
+
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonalRH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+{
+	const cx_float l = left;
+	const cx_float r = right;
+	const cx_float t = top;
+	const cx_float b = bottom;
+	const cx_float n = z_near;
+	const cx_float f = z_far;
+
+	return cx_mat4_set(2.0 / (r - l), 0.0,           0.0,            -(r + l) / (r - l),
+					   0.0,           2.0 / (t - b), 0.0,            -(t + b) / (t - b),
+					   0.0,           0.0,           -1.0 / (f - n), -n / (f - n),
+					   0.0,           0.0,           0.0,            1.0);
+}
+
+CX_API CX_API_INLINE cx_mat4 cx_mat4_orthogonal(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+{
+	#if    defined(CX_ORTHOGONAL_LH_NO)
+		return cx_mat4_orthogonalLH_NO(left, right, bottom, top, z_near, z_far);
+	#elif  defined(CX_ORTHOGONAL_RH_NO)
+		return cx_mat4_orthogonalRH_NO(left, right, bottom, top, z_near, z_far);
+	#elif  defined(CX_ORTHOGONAL_LH_ZO)
+		return cx_mat4_orthogonalLH_ZO(left, right, bottom, top, z_near, z_far);
+	#elif  defined(CX_ORTHOGONAL_RH_ZO)
+		return cx_mat4_orthogonalRH_ZO(left, right, bottom, top, z_near, z_far);
+	#else
+		return cx_mat4_orthogonalRH_NO(left, right, bottom, top, z_near, z_far);
 	#endif
 }
 
@@ -2471,7 +2551,7 @@ CX_API void cx_ifft_bit(cx_complex in[], cx_complex out[], int N)
 /* ------------------------------------------------------------------------------------------------------------ */
 /* Numerical ODE solver --------------------------------------------------------------------------------------- */
 /* explicit euler  */
-CX_API cx_float cx_explicit_euler(cx_float (* f)(cx_float, cx_float), cx_float x, cx_float y, cx_float h)
+CX_API CX_API_INLINE cx_float cx_explicit_euler(cx_float (* f)(cx_float, cx_float), cx_float x, cx_float y, cx_float h)
 {
   	cx_float fxy = f(x, y);
   	return (y + h * fxy);

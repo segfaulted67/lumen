@@ -1,7 +1,8 @@
 #include "IndexBuffer.h"
 
 namespace Lumen {
-	IndexBuffer::IndexBuffer(const void *data, uint size, GLenum usage) : m_size(size)
+	IndexBuffer::IndexBuffer(const void *data, uint size, GLenum usage)
+		: m_id(0), m_size(size)
 	{
 		GLCall(glGenBuffers(1, &m_id));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id));
@@ -14,7 +15,7 @@ namespace Lumen {
 		GLCall(glDeleteBuffers(1, &m_id));
 	}
 
-	uint IndexBuffer::getSize() const
+	uint IndexBuffer::GetSize() const
 	{
 		return m_size;
 	}

@@ -12,10 +12,10 @@ namespace Lumen {
 		GLCall(glDeleteVertexArrays(1, &m_id));
 	}
 
-	void VertexArray::AddBuffer(VertexBuffer& vb, const VertexBufferLayout& layout)
+	void VertexArray::AddBuffer(const std::shared_ptr<VertexBuffer>& vb, const VertexBufferLayout& layout)
 	{
 		Bind();
-		vb.Bind();
+		vb->Bind();
 
 		const auto& elements = layout.GetElements();
 		uint offset = 0;
@@ -26,6 +26,26 @@ namespace Lumen {
 			GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (const void*)(size_t)offset));
 			offset += element.count * VertexBufferLayoutElement::GetSizeOfType(element.type);
 		}
+	}
+
+	void VertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+	{
+		m_vertexBuffer.push_back(vertexBuffer);
+	}
+
+	void VertexArray::AddIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+	{
+		m_indexBuffer = indexBuffer;
+	}
+
+	const std::vector<std::shared_ptr<VertexBuffer>>& VertexArray::GetVertexBuffers() const
+	{
+		return m_vertexBuffer;
+	}
+
+	const std::shared_ptr<IndexBuffer>& VertexArray::GetIndexBuffer() const
+	{
+		return m_indexBuffer;
 	}
 
 	void VertexArray::Bind() const

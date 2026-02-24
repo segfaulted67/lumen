@@ -5,7 +5,18 @@
 #include <glad/glad.h>
 
 #ifdef LUMEN_DEBUG
-#define ASSERT(x)	if (!(x))	abort()
+
+#ifndef DEBUG_BREAK
+#	ifdef _MSC_VER
+#		define DEBUG_BREAK	__debugbreak()
+#	elif defined(__GNUC__) || defined(__clang)
+#		define DEBUG_BREAK	__builtin_trap()
+#	else
+#		define DEBUG_BREAK	abort()
+#	endif
+#endif
+
+#define ASSERT(x)	if (!(x))	DEBUG_BREAK
 #define GLCall(x)	\
 	GLClearError();	\
 	x;				\

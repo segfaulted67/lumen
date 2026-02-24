@@ -2,7 +2,8 @@
 
 
 namespace Lumen {
-    Window::Window(const std::string& title, uint width, uint height) : m_title(title), m_height(height), m_width(width)
+    Window::Window(const std::string& title, uint width, uint height)
+		: m_title(title), m_height(height), m_width(width)
     {
         m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
 		if (!m_window) {
@@ -24,6 +25,7 @@ namespace Lumen {
 
     Window::~Window()
     {
+		// if (m_window)	glfwDestroyWindow(m_window);
         glfwTerminate();
     }
 
@@ -46,6 +48,16 @@ namespace Lumen {
         glfwSwapBuffers(m_window);
     }
 
+	void Window::SwapInterval(bool enabled) const
+	{
+		GLCall(glfwSwapInterval(enabled ? 1 : 0));
+	}
+
+	void Window::SetVsync(bool enabled) const
+	{
+		GLCall(glfwSwapInterval(enabled ? 1 : 0));
+	}
+
     void Window::PollEvents() const
     {
         glfwPollEvents();
@@ -57,20 +69,38 @@ namespace Lumen {
         return false;
     }
 
-    GLFWwindow *Window::getGLFWwindow() const
+    GLFWwindow *Window::GetWindow() const
     {
         return m_window;
     }
 
-    uint Window::getWidth() const
+    uint Window::GetWidth() const
     {
         return m_width;
     }
 
-    uint Window::getHeight() const
+    uint Window::GetHeight() const
     {
         return m_height;
     }
+
+	float Window::GetTime() const
+	{
+		return (float)glfwGetTime();
+	}
+
+	float Window::GetFrameTime()
+	{
+		float currentTime = GetTime();
+		m_deltaTime = currentTime - m_lastTime;
+		m_lastTime = currentTime;
+		return m_deltaTime;
+	}
+
+	float Window::GetFPS() const
+	{
+		return 1.0 / m_deltaTime;
+	}
 
 	void Window::FrameBufferSizeCallback(GLFWwindow *window, int width, int height)
 	{

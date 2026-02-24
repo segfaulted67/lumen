@@ -66,111 +66,111 @@ namespace Lumen {
 		GLCall(glUseProgram(0));
 	}
 
-	void Shader::setUniformFloat(const std::string& name, const float v1)
+	void Shader::SetUniform1f(const std::string& name, const float v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform1f(loc, v1));
 	}
 
-	void Shader::setUniformFloat(const std::string& name, const float v1, const float v2)
+	void Shader::SetUniform2f(const std::string& name, const float v1, const float v2)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform2f(loc, v1, v2));
 	}
 
-	void Shader::setUniformFloat(const std::string& name, const float v1, const float v2, const float v3)
+	void Shader::SetUniform3f(const std::string& name, const float v1, const float v2, const float v3)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform3f(loc, v1, v2, v3));
 	}
 
-	void Shader::setUniformFloat(const std::string& name, const float v1, const float v2, const float v3, const float v4)
+	void Shader::SetUniform4f(const std::string& name, const float v1, const float v2, const float v3, const float v4)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform4f(loc, v1, v2, v3, v4));
 	}
 
-	void Shader::setUniformInt(const std::string& name, const int v1)
+	void Shader::SetUniform1i(const std::string& name, const int v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform1i(loc, v1));
 	}
 
-	void Shader::setUniformInt(const std::string& name, const int v1, const int v2)
+	void Shader::SetUniform2i(const std::string& name, const int v1, const int v2)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform2i(loc, v1, v2));
 	}
 
-	void Shader::setUniformInt(const std::string& name, const int v1, const int v2, const int v3)
+	void Shader::SetUniform3i(const std::string& name, const int v1, const int v2, const int v3)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform3i(loc, v1, v2, v3));
 	}
 
-	void Shader::setUniformInt(const std::string& name, const int v1, const int v2, const int v3, const int v4)
+	void Shader::SetUniform4i(const std::string& name, const int v1, const int v2, const int v3, const int v4)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform4i(loc, v1, v2, v3, v4));
 	}
 
-	void Shader::setUniformUInt(const std::string& name, const uint v1)
+	void Shader::SetUniform1ui(const std::string& name, const uint v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform1ui(loc, v1));
 	}
 
-	void Shader::setUniformUInt(const std::string& name, const uint v1, const uint v2)
+	void Shader::SetUniform2ui(const std::string& name, const uint v1, const uint v2)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform2ui(loc, v1, v2));
 	}
 
-	void Shader::setUniformUInt(const std::string& name, const uint v1, const uint v2, const uint v3)
+	void Shader::SetUniform3ui(const std::string& name, const uint v1, const uint v2, const uint v3)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform3ui(loc, v1, v2, v3));
 	}
 
-	void Shader::setUniformUInt(const std::string& name, const uint v1, const uint v2, const uint v3, const uint v4)
+	void Shader::SetUniform4ui(const std::string& name, const uint v1, const uint v2, const uint v3, const uint v4)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform4ui(loc, v1, v2, v3, v4));
 	}
 
-	void Shader::setUniformVec2(const std::string& name, const cx::Vec2& v1)
+	void Shader::SetUniformVec2(const std::string& name, const cx::Vec2& v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform2fv(loc, 1, v1.data()));
 	}
 
-	void Shader::setUniformVec3(const std::string& name, const cx::Vec3& v1)
+	void Shader::SetUniformVec3(const std::string& name, const cx::Vec3& v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform3fv(loc, 1, v1.data()));
 	}
 
-	void Shader::setUniformVec4(const std::string& name, const cx::Vec4& v1)
+	void Shader::SetUniformVec4(const std::string& name, const cx::Vec4& v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniform4fv(loc, 1, v1.data()));
 	}
 
-	void Shader::setUniformMat2(const std::string& name, const cx::Mat2& v1)
+	void Shader::SetUniformMat2(const std::string& name, const cx::Mat2& v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniformMatrix2fv(loc, 1, GL_TRUE, v1.data()));
 	}
 
-	void Shader::setUniformMat3(const std::string& name, const cx::Mat3& v1)
+	void Shader::SetUniformMat3(const std::string& name, const cx::Mat3& v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniformMatrix3fv(loc, 1, GL_TRUE, v1.data()));
 	}
 
-	void Shader::setUniformMat4(const std::string& name, const cx::Mat4& v1)
+	void Shader::SetUniformMat4(const std::string& name, const cx::Mat4& v1)
 	{
-		uint loc = getUniformLocation(name);
+		int loc = getUniformLocation(name);
 		GLCall(glUniformMatrix4fv(loc, 1, GL_TRUE, v1.data()));
 	}
 
@@ -187,13 +187,13 @@ namespace Lumen {
 		return buffer.str();
 	}
 
-	uint Shader::getUniformLocation(const std::string& name)
+	int Shader::getUniformLocation(const std::string& name)
 	{
 		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end()) {
 			return m_UniformLocationCache[name];
 		}
 
-		uint loc = GLCall(glGetUniformLocation(m_id, name.c_str()));
+		int loc = GLCall(glGetUniformLocation(m_id, name.c_str()));
 		if (loc == -1) {
 			std::cout << "Warning: Uniform '" << name << "' not found." << std::endl;
 		}

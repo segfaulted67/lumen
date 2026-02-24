@@ -2,6 +2,7 @@
 
 namespace Lumen {
 	VertexBuffer::VertexBuffer(const void *data, uint size, GLenum usage)
+		: m_id(0), m_size(size)
 	{
 		GLCall(glGenBuffers(1, &m_id));
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_id));
@@ -11,6 +12,11 @@ namespace Lumen {
 	VertexBuffer::~VertexBuffer()
 	{
 		GLCall(glDeleteBuffers(1, &m_id));
+	}
+
+	uint VertexBuffer::GetSize() const
+	{
+		return m_size;
 	}
 
 	void VertexBuffer::Bind() const

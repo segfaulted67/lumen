@@ -49,8 +49,8 @@ namespace cx {
 		Vec2(const cx_quat &other) : v { other.x, other.y } {}
 
 
-		const cx_float& x() const;
-		const cx_float& y() const;
+		inline const cx_float& x() const { return v.x; }
+		inline const cx_float& y() const { return v.y; }
 		Vec2 set(const cx_float x, const cx_float y) const;
 		cx_vec2 get() const;
 		const cx_float *data() const;
@@ -98,9 +98,9 @@ namespace cx {
 		Vec3(const cx_quat &other) : v { other.x, other.y, other.z } {}
 
 
-		const cx_float& x() const;
-		const cx_float& y() const;
-		const cx_float& z() const;
+		inline const cx_float& x() const { return v.x; }
+		inline const cx_float& y() const { return v.y; }
+		inline const cx_float& z() const { return v.z; }
 		Vec3 set(const cx_float x, const cx_float y, const cx_float z) const;
 		cx_vec3 get() const;
 		const cx_float *data() const;
@@ -144,10 +144,10 @@ namespace cx {
 		Vec4(const cx_quat &other) : v { other.x, other.y, other.z, other.w } {}
 
 
-		const cx_float& x() const;
-		const cx_float& y() const;
-		const cx_float& z() const;
-		const cx_float& w() const;
+		inline const cx_float& x() const { return v.x; }
+		inline const cx_float& y() const { return v.y; }
+		inline const cx_float& z() const { return v.z; }
+		inline const cx_float& w() const { return v.w; }
 		Vec4 set(const cx_float x, const cx_float y, const cx_float z, const cx_float w) const;
 		cx_vec4 get() const;
 		const cx_float *data() const;
@@ -283,7 +283,10 @@ namespace cx {
 			 const cx_float m10, const cx_float m11, const cx_float m12, const cx_float m13,
 			 const cx_float m20, const cx_float m21, const cx_float m22, const cx_float m23,
 			 const cx_float m30, const cx_float m31, const cx_float m32, const cx_float m33) : m { m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, } {}
-		Mat4(const cx_float fT) : m { fT, fT, fT, fT, fT, fT, fT, fT, fT, fT, fT, fT, fT, fT, fT, fT } {}
+		Mat4(const cx_float fT) : m { fT,  0.0, 0.0, 0.0,
+									  0.0, fT,  0.0, 0.0,
+									  0.0, 0.0, fT,  0.0,
+									  0.0, 0.0, 0.0, fT } {}
 		Mat4(const cx_mat2 &other) : m { other.m00, other.m01, 0.0, 0.0,
 								  other.m10, other.m11, 0.0, 0.0,
 								  0.0,   0.0,   1.0, 0.0,
@@ -319,6 +322,10 @@ namespace cx {
 		static Mat4 perspectiveRH_NO(const cx_float fov, const cx_float aspect, const cx_float znear, const cx_float zfar);
 		static Mat4 perspectiveRH_ZO(const cx_float fov, const cx_float aspect, const cx_float znear, const cx_float zfar);
 		static Mat4 perspective(const cx_float fov, const cx_float aspect, const cx_float znear, const cx_float zfar);
+		static Mat4 orthogonalLH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
+		static Mat4 orthogonalRH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
+		static Mat4 orthogonalLH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
+		static Mat4 orthogonalRH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far);
 		static Mat4 lookAtLH(const Vec3 eye, const Vec3 center, const Vec3 up);
 		static Mat4 lookAtRH(const Vec3 eye, const Vec3 center, const Vec3 up);
 		static Mat4 lookAt(const Vec3 eye, const Vec3 center, const Vec3 up);
@@ -392,16 +399,15 @@ namespace cx {
 	};
 
 #ifdef CX_IMPLEMENTATION
+	// inline const cx_float& Vec2::x() const
+	// {
+	// 	return v.x;
+	// }
 
-	inline const cx_float& Vec2::x() const
-	{
-		return v.x;
-	}
-
-	inline const cx_float& Vec2::y() const
-	{
-		return v.y;
-	}
+	// inline const cx_float& Vec2::y() const
+	// {
+	// 	return v.y;
+	// }
 
 	inline Vec2 Vec2::set(const cx_float x, const cx_float y) const
 	{
@@ -572,20 +578,20 @@ namespace cx {
 	}
 
 
-	inline const cx_float& Vec3::x() const
-	{
-		return v.x;
-	}
+	// const cx_float& Vec3::x() const
+	// {
+	// 	return v.x;
+	// }
 
-	inline const cx_float& Vec3::y() const
-	{
-		return v.y;
-	}
+	// const cx_float& Vec3::y() const
+	// {
+	// 	return v.y;
+	// }
 
-	inline const cx_float& Vec3::z() const
-	{
-		return v.z;
-	}
+	// const cx_float& Vec3::z() const
+	// {
+	// 	return v.z;
+	// }
 
 	inline Vec3 Vec3::set(const cx_float x, const cx_float y, const cx_float z) const
 	{
@@ -607,32 +613,32 @@ namespace cx {
 		return Vec3(cx_vec3_zero());
 	}
 
-	inline Vec3 Vec3::operator-() const
+	Vec3 Vec3::operator-() const
 	{
 		return Vec3(cx_vec3_negate(v));
 	}
 
-	inline Vec3 Vec3::operator+(const Vec3 &other) const
+	Vec3 Vec3::operator+(const Vec3 &other) const
 	{
 		return Vec3(cx_vec3_add(v, other.v));
 	}
 
-	inline Vec3 Vec3::operator-(const Vec3 &other) const
+	Vec3 Vec3::operator-(const Vec3 &other) const
 	{
 		return Vec3(cx_vec3_sub(v, other.v));
 	}
 
-	inline Vec3 Vec3::operator+(const cx_float fT) const
+	Vec3 Vec3::operator+(const cx_float fT) const
 	{
 		return Vec3(cx_vec3_addf(v, fT));
 	}
 
-	inline Vec3 Vec3::operator-(const cx_float fT) const
+	Vec3 Vec3::operator-(const cx_float fT) const
 	{
 		return Vec3(cx_vec3_subf(v, fT));
 	}
 
-	inline Vec3 Vec3::operator*(const cx_float fT) const
+	Vec3 Vec3::operator*(const cx_float fT) const
 	{
 		return Vec3(cx_vec3_mulf(v, fT));
 	}
@@ -642,12 +648,12 @@ namespace cx {
 		return vec * fT;
 	}
 
-	inline Vec3 Vec3::operator/(const cx_float fT) const
+	Vec3 Vec3::operator/(const cx_float fT) const
 	{
 		return Vec3(cx_vec3_divf(v, fT));
 	}
 
-	inline Vec3& Vec3::operator+=(const Vec3 &other)
+	Vec3& Vec3::operator+=(const Vec3 &other)
 	{
 		v.x += other.v.x;
 		v.y += other.v.y;
@@ -655,7 +661,7 @@ namespace cx {
 		return *this;
 	}
 
-	inline Vec3& Vec3::operator-=(const Vec3 &other)
+	Vec3& Vec3::operator-=(const Vec3 &other)
 	{
 		v.x -= other.v.x;
 		v.y -= other.v.y;
@@ -663,7 +669,7 @@ namespace cx {
 		return *this;
 	}
 
-	inline Vec3& Vec3::operator+=(const cx_float fT)
+	Vec3& Vec3::operator+=(const cx_float fT)
 	{
 		v.x += fT;
 		v.y += fT;
@@ -671,7 +677,7 @@ namespace cx {
 		return *this;
 	}
 
-	inline Vec3& Vec3::operator-=(const cx_float fT)
+	Vec3& Vec3::operator-=(const cx_float fT)
 	{
 		v.x -= fT;
 		v.y -= fT;
@@ -679,7 +685,7 @@ namespace cx {
 		return *this;
 	}
 
-	inline Vec3& Vec3::operator*=(const cx_float fT)
+	Vec3& Vec3::operator*=(const cx_float fT)
 	{
 		v.x *= fT;
 		v.y *= fT;
@@ -730,7 +736,7 @@ namespace cx {
 		return cx_vec3_mag(v);
 	}
 
-	inline Vec3 Vec3::normalize() const
+	Vec3 Vec3::normalize() const
 	{
 		return Vec3(cx_vec3_normalize(v));
 	}
@@ -747,25 +753,25 @@ namespace cx {
 
 
 
-	inline const cx_float& Vec4::x() const
-	{
-		return v.x;
-	}
+	// inline const cx_float& Vec4::x() const
+	// {
+	// 	return v.x;
+	// }
 
-	inline const cx_float& Vec4::y() const
-	{
-		return v.y;
-	}
+	// inline const cx_float& Vec4::y() const
+	// {
+	// 	return v.y;
+	// }
 
-	inline const cx_float& Vec4::z() const
-	{
-		return v.z;
-	}
+	// inline const cx_float& Vec4::z() const
+	// {
+	// 	return v.z;
+	// }
 
-	inline const cx_float& Vec4::w() const
-	{
-		return v.w;
-	}
+	// inline const cx_float& Vec4::w() const
+	// {
+	// 	return v.w;
+	// }
 
 	inline Vec4 Vec4::set(const cx_float x, const cx_float y, const cx_float z, const cx_float w) const
 	{
@@ -1243,7 +1249,7 @@ namespace cx {
 								m30, m31, m32, m33));
 	}
 
-	inline cx_mat4 Mat4::get() const
+	cx_mat4 Mat4::get() const
 	{
 		return m;
 	}
@@ -1322,6 +1328,26 @@ namespace cx {
 		return Mat4(cx_mat4_perspective(fov, aspect, znear, zfar));
 	}
 
+	Mat4 orthogonalLH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+	{
+		return Mat4(cx_mat4_orthogonalLH_NO(left, right, bottom, top, z_near, z_far));
+	}
+
+	Mat4 Mat4::orthogonalRH_NO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+	{
+		return Mat4(cx_mat4_orthogonalRH_NO(left, right, bottom, top, z_near, z_far));
+	}
+
+	Mat4 orthogonalLH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+	{
+		return Mat4(cx_mat4_orthogonalLH_ZO(left, right, bottom, top, z_near, z_far));
+	}
+
+	Mat4 orthogonalRH_ZO(const cx_float left, const cx_float right, const cx_float bottom, const cx_float top, const cx_float z_near, const cx_float z_far)
+	{
+		return Mat4(cx_mat4_orthogonalLH_ZO(left, right, bottom, top, z_near, z_far));
+	}
+
 	Mat4 Mat4::lookAtLH(const Vec3 eye, const Vec3 center, const Vec3 up)
 	{
 		const cx_vec3 v1 = eye.get();
@@ -1349,35 +1375,35 @@ namespace cx {
 		return Mat4(cx_mat4_lookAt(v1, v2, v3));
 	}
 
-	inline Mat4 Mat4::operator+(const Mat4 &other) const
+	Mat4 Mat4::operator+(const Mat4 &other) const
 	{
 		const cx_mat4 v = other.get();
 		return Mat4(cx_mat4_add(m, v));
 	}
 
-	inline Mat4 Mat4::operator-(const Mat4 &other) const
+	Mat4 Mat4::operator-(const Mat4 &other) const
 	{
 		const cx_mat4 v = other.get();
 		return Mat4(cx_mat4_sub(m, v));
 	}
 
-	inline Mat4 Mat4::operator*(const cx_float fT) const
+	Mat4 Mat4::operator*(const cx_float fT) const
 	{
 		return Mat4(cx_mat4_mulf(m, fT));
 	}
 
-	inline Mat4 operator*(const cx_float fT, const Mat4& m)
+	Mat4 operator*(const cx_float fT, const Mat4& m)
 	{
 		return m * fT;
 	}
 
 
-	inline Mat4 Mat4::operator/(const cx_float fT) const
+	Mat4 Mat4::operator/(const cx_float fT) const
 	{
 		return Mat4(cx_mat4_divf(m, fT));
 	}
 
-	inline Mat4 Mat4::operator+=(const Mat4 &other)
+	Mat4 Mat4::operator+=(const Mat4 &other)
 	{
 		const cx_mat4 m1 = other.get();
 		m.m00 += m1.m00;
@@ -1399,7 +1425,7 @@ namespace cx {
 		return *this;
 	}
 
-	inline Mat4 Mat4::operator-=(const Mat4 &other)
+	Mat4 Mat4::operator-=(const Mat4 &other)
 	{
 		const cx_mat4 m1 = other.get();
 		m.m00 -= m1.m00;
@@ -1421,33 +1447,33 @@ namespace cx {
 		return *this;
 	}
 
-	inline Mat4 Mat4::operator*(const Mat4 &other) const
+	Mat4 Mat4::operator*(const Mat4 &other) const
 	{
 		return Mat4(cx_mat4_mul(m, other.m));
 	}
 
-	inline Vec4 Mat4::operator*(const Vec4 &other) const
+	Vec4 Mat4::operator*(const Vec4 &other) const
 	{
 		const cx_vec4 v = other.get();
 		return Vec4(cx_mat4_vec4_mul(m, v));
 	}
 
-	inline cx_float Mat4::det() const
+	cx_float Mat4::det() const
 	{
 		return cx_mat4_det(m);
 	}
 
-	inline Mat4 Mat4::transpose() const
+	Mat4 Mat4::transpose() const
 	{
 		return Mat4(cx_mat4_transpose(m));
 	}
 
-	inline Mat4 Mat4::inverse() const
+	Mat4 Mat4::inverse() const
 	{
 		return Mat4(cx_mat4_inverse(m));
 	}
 
-	inline cx_float Mat4::trace() const
+	cx_float Mat4::trace() const
 	{
 		return cx_mat4_trace(m);
 	}
@@ -1477,7 +1503,7 @@ namespace cx {
 		return Mat4(cx_mat4_rotation_euler_xyz(phi, theta, psi));
 	}
 
-	inline Mat4 Mat4::fromQuat(const Quat& q)
+	Mat4 Mat4::fromQuat(const Quat& q)
 	{
 		const cx_quat p = q.get();
 		return Mat4(cx_mat4_from_quat(p));
@@ -1578,11 +1604,19 @@ namespace cx {
 		return Quat(cx_quat_divf(q, fT));
 	}
 
-	inline Quat Quat::operator*(const Quat &other) const
+	Quat Quat::operator*(const Quat &other) const
 	{
 		const cx_quat q1 = other.get();
 		return Quat(cx_quat_mul(q, q1));
 	}
+
+	Vec3 operator*(const Quat& q, const Vec3 &other)
+	{
+		Quat vq(0.0f, other.x(), other.y(), other.z());
+    	Quat rq = q * vq * q.conjugate();
+    	return Vec3(rq.x(), rq.y(), rq.z());
+	}
+
 
 	inline bool Quat::operator==(const Quat &other) const
 	{
@@ -1596,7 +1630,7 @@ namespace cx {
 		return !(*this == other);
 	}
 
-	inline Quat Quat::normalize() const
+	Quat Quat::normalize() const
 	{
 		return Quat(cx_quat_normalize(q));
 	}
@@ -1606,7 +1640,7 @@ namespace cx {
 		return cx_quat_mag(q);
 	}
 
-	inline Quat Quat::conjugate() const
+	Quat Quat::conjugate() const
 	{
 		return Quat(cx_quat_conjugate(q));
 	}
@@ -1640,13 +1674,13 @@ namespace cx {
 		return cx_quat_dot(q, q1);
 	}
 
-	inline Vec3 Quat::rotate(const Vec3 v) const
+	Vec3 Quat::rotate(const Vec3 v) const
 	{
 		const cx_vec3 v1 = v.get();
 		return Vec3(cx_quat_vec3_rotate(q, v1));
 	}
 
-	inline Vec4 Quat::rotate(const Vec4 v) const
+	Vec4 Quat::rotate(const Vec4 v) const
 	{
 		const cx_vec4 v1 = v.get();
 		return Vec4(cx_quat_vec4_rotate(q, v1));
